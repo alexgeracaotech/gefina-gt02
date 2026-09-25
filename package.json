@@ -1,0 +1,10 @@
+{
+    "name": "gefina",
+    "version": "0.0.0",
+    "description": "Sistema de gestão de contas a receber.",
+    "author": "Alex Bessa",
+    "type": "module",
+    "scripts": {
+        "dev": "node --watch ./server.ts"
+    }
+}
