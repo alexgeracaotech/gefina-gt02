@@ -1,5 +1,11 @@
 {
     "compilerOptions": {
+        "target": "esnext",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "strict": true,
+        "erasableSyntaxOnly": true,
+        "noEmit": true,
         "types": ["node"]
     }
 }
