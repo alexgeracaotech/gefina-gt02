@@ -1,12 +1,12 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
-        "strict": true,
-        "erasableSyntaxOnly": true,
-        "allowImportingTsExtensions": true,
-        "noEmit": true,
-        "types": ["node"]
-    }
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["node"]
+  }
 }
