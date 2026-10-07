@@ -23,4 +23,4 @@ app.use((_request, response) => {
   response.status(404).json({ message: 'Recurso não encontrado.' });
 });
 
-app.listen(3000);
+app.listen(Number(process.env.PORT) || 3000);
