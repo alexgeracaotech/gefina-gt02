@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./server.ts",
-    "dev": "node --watch ./server.ts",
+    "dev": "node --watch --env-file=.env ./server.ts",
     "check": "tsc --noEmit"
   },
   "devDependencies": {
