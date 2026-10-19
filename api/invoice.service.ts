@@ -1,6 +1,6 @@
 import pool from './database.ts';
 
-type InvoiceStatus = 'paid' | 'pending';
+export type InvoiceStatus = 'paid' | 'pending';
 type InvoiceSituation = 'paid' | 'pending' | 'overdue';
 
 interface Customer {
@@ -9,7 +9,7 @@ interface Customer {
   email: string;
 }
 
-interface Invoice {
+export interface Invoice {
   id: number;
   amount: number;
   status: InvoiceStatus;
@@ -47,6 +47,14 @@ function toInvoice(row: InvoiceRow): Invoice {
   };
 }
 
+function toInvoices(rows: InvoiceRow[]): Invoice[] {
+  const invoices: Invoice[] = [];
+
+  rows.forEach(invoice => invoices.push(toInvoice(invoice)));
+
+  return invoices;
+}
+
 const baseQuery = `
   SELECT
     invoices.id,
@@ -68,13 +76,12 @@ const baseQuery = `
 `;
 
 export async function findAllInvoices(): Promise<Invoice[]> {
-  const connect = await pool.query<InvoiceRow>(`${baseQuery} ORDER BY invoices.issue_date DESC;`);
+  const connect = await pool.query<InvoiceRow>(`
+    ${baseQuery}
+    ORDER BY invoices.created_at DESC;
+  `);
 
-  const invoices: Invoice[] = [];
-
-  connect.rows.forEach(invoice => invoices.push(toInvoice(invoice)));
-
-  return invoices;
+  return toInvoices(connect.rows);
 }
 
 export async function findInvoiceById(id: number): Promise<Invoice | undefined> {
@@ -84,4 +91,24 @@ export async function findInvoiceById(id: number): Promise<Invoice | undefined> 
 
   return toInvoice(connect.rows[0]);
 }
- 
+
+export async function findRecentInvoices(): Promise<Invoice[]> {
+  const connect = await pool.query<InvoiceRow>(`
+    ${baseQuery}
+    ORDER BY invoices.created_at DESC
+    LIMIT 5;
+  `);
+
+  return toInvoices(connect.rows);
+}
+
+export async function findOverdueInvoices(): Promise<Invoice[]> {
+  const connect = await pool.query<InvoiceRow>(`
+    ${baseQuery}
+    WHERE invoices.status = 'pending' AND invoices.due_date < CURRENT_DATE
+    ORDER BY invoices.issue_date
+    LIMIT 5;
+  `);
+
+  return toInvoices(connect.rows);
+}
