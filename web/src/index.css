@@ -26,10 +26,33 @@
   --text-base: 1rem;
   --text-lg: 1.25rem;
   --text-xl: 1.5rem;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 
 body {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    font-size: var(--text-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-family: var(--font-sans);
+}
+
+h1 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+th {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.numeric {
+  font-variant-numeric: tabular-nums;
 }
