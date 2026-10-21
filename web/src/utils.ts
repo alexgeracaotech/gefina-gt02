@@ -8,6 +8,14 @@ export function situationLabel(situation: InvoiceSituation) {
     }
 }
 
+export function situationClass(situation: InvoiceSituation) {
+    switch (situation) {
+        case 'paid': return 'situation-paid';
+        case 'pending': return 'situation-pending';
+        case 'overdue': return 'situation-overdue';
+    }
+}
+
 export function formatCurrency(cents: number): string {
     const formatter = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
