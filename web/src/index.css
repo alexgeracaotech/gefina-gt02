@@ -50,17 +50,20 @@ body {
 h1 {
   font-size: var(--text-xl);
   font-weight: 600;
+  margin-bottom: var(--space-6);
 }
 
 h2 {
   font-size: var(--text-lg);
   font-weight: 600;
+  margin-bottom: var(--space-3);
 }
 
 th {
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-text-muted);
+  text-align: left;
 }
 
 a {
@@ -96,10 +99,63 @@ a {
   padding: var(--space-8);
 }
 
+.summary-cards {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.card {
+  flex-grow: 1;
+  flex-basis: 0;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+}
+
+.card-label {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.card-value {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.summary-tables {
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.panel {
+  flex-grow: 1;
+  flex-basis: 0;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-3);
+}
+
 .numeric {
   font-variant-numeric: tabular-nums;
 }
 
+.numeric-date {
+  text-align: center;
+}
 
 .situation-paid {
   color: var(--color-paid);
