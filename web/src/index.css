@@ -94,6 +94,19 @@ a {
   gap: var(--space-1);
 }
 
+.menu a {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  display: block;
+  transition: 0.25s;
+}
+
+.menu a:hover, .menu a:focus-visible, .menu a.active {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
 .content {
   margin-left: var(--sidebar-width);
   padding: var(--space-8);
