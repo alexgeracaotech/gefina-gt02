@@ -1,0 +1,13 @@
+@host = http://localhost:3000
+
+### Verificação de saúde
+GET {{host}}/api/health
+
+### Consultar métricas do painel inicial
+GET {{host}}/api/dashboard
+
+### Buscar todas as faturas
+GET {{host}}/api/invoices
+
+### Buscar uma fatura pelo identificador
+GET {{host}}/api/invoices/1
