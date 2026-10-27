@@ -6,7 +6,11 @@ import invoices from './invoice.route.ts';
 
 import pool from './database.ts';
 
+import handleError from './error.middleware.ts';
+
 const app = express();
+app.use(express.json());
+
 const dist = path.join(import.meta.dirname, '..', 'web', 'dist');
 
 app.use((request, _response, next) => {
@@ -28,7 +32,7 @@ app.get('/api/health', async (_request, response) => {
     response.status(500).json({
       server: 'Server is running.',
       database: 'unavaliable'
-    })
+    });
   }
 
 });
@@ -43,12 +47,14 @@ app.use((request, response, next) => {
     next();
     return;
   }
-
-  response.sendFile(join(dist, 'index.html'));
+  
+  response.sendFile(path.join(dist, 'index.html'));
 });
 
 app.use((_request, response) => {
   response.status(404).json({ message: 'Recurso não encontrado.' });
 });
+
+app.use(handleError);
 
 app.listen(Number(process.env.PORT) || 3000);
