@@ -1,5 +1,6 @@
 :root {
   --color-background: #0f1117;
+  --color-background-backdrop: #0f111799;
   --color-surface: #171a21;
   --color-surface-raised: #1f232c;
   --color-border: #2a2f3a;
@@ -99,12 +100,18 @@ a {
   border-radius: var(--radius-control);
   color: var(--color-text-muted);
   display: block;
-  transition: 0.25s;
 }
 
-.menu a:hover, .menu a:focus-visible, .menu a.active {
+.menu a:hover,
+.menu a:focus-visible,
+.menu a.active {
   background-color: var(--color-surface-raised);
   color: var(--color-text);
+}
+
+.menu a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px; 
 }
 
 .content {
@@ -157,7 +164,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   border-bottom: 1px solid var(--color-border);
   padding: var(--space-3);
 }
@@ -181,3 +189,115 @@ th, td {
 .situation-overdue {
   color: var(--color-overdue);
 }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+.page-header h1 {
+  margin-bottom: 0;
+}
+
+input,
+button,
+select {
+  font-family: inherit;
+  font-size: var(--text-base);
+  border-radius: var(--radius-control);
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px; 
+}
+
+input,
+select {
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+button {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.button-secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.button-danger {
+  background-color: transparent;
+  color: var(--color-overdue);
+  border-color: var(--color-overdue);
+}
+
+.invoice-modal {
+  width: 720px;
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-dialog);
+}
+
+.invoice-modal::backdrop {
+  background-color: var(--color-background-backdrop);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.field label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.horizontal-fields {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: end;
+  gap: var(--space-2);
+}
+
+.form-error {
+  font-size: var(--text-sm);
+  color: var(--color-overdue);
+}
+
