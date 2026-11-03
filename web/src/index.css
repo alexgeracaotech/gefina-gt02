@@ -270,6 +270,11 @@ button:disabled {
   background-color: var(--color-background-backdrop);
 }
 
+.invoice-modal:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px; 
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -306,3 +311,12 @@ form {
   color: var(--color-overdue);
 }
 
+.confirm-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.confirm-form p, .confirm-form button {
+  flex-grow: 1;
+}
