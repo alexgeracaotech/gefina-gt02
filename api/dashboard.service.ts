@@ -2,10 +2,11 @@ import pool from './database.ts';
 
 import {
     type Invoice,
-    type InvoiceStatus,
     findRecentInvoices,
     findOverdueInvoices
 } from './invoice.service.ts';
+
+import type { InvoiceStatus } from './invoice.schema.ts';
 
 interface DashboardTotals {
     paid: number;

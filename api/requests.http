@@ -29,8 +29,60 @@ Content-Type: application/json
     "customerId": 1,
     "amount": 125037,
     "status": "pending",
-    "issueDate": "2026-10-01",
-    "dueDate": "2026-10-31"
+    "issueDate": "2026-11-01",
+    "dueDate": "2026-11-30"
+}
+
+### Criar fatura sem corpo
+POST {{host}}/api/invoices
+Content-Type: application/json
+
+### Criar fatura com valor zerado
+POST {{host}}/api/invoices
+Content-Type: application/json
+
+{
+    "customerId": 1,
+    "amount": 0,
+    "status": "pending",
+    "issueDate": "2026-11-01",
+    "dueDate": "2026-11-30"
+}
+
+### Criar fatura com situação inválida
+POST {{host}}/api/invoices
+Content-Type: application/json
+
+{
+    "customerId": 1,
+    "amount": 125037,
+    "status": "cancelled",
+    "issueDate": "2026-11-01",
+    "dueDate": "2026-11-30"
+}
+
+### Criar fatura com data de vencimento anterior à data de emissão
+POST {{host}}/api/invoices
+Content-Type: application/json
+
+{
+    "customerId": 1,
+    "amount": 125037,
+    "status": "pending",
+    "issueDate": "2026-11-30",
+    "dueDate": "2026-11-01"
+}
+
+### Criar fatura com data inexistente
+POST {{host}}/api/invoices
+Content-Type: application/json
+
+{
+    "customerId": 1,
+    "amount": 125037,
+    "status": "pending",
+    "issueDate": "2026-11-01",
+    "dueDate": "2026-11-31"
 }
 
 ### Atualizar fatura
@@ -41,8 +93,8 @@ Content-Type: application/json
     "customerId": 1,
     "amount": 125037,
     "status": "paid",
-    "issueDate": "2026-10-01",
-    "dueDate": "2026-10-22"
+    "issueDate": "2026-11-01",
+    "dueDate": "2026-11-22"
 }
 
 ### Deletar fatura
