@@ -6,7 +6,8 @@
     "scripts": {
         "check": "biome check ./",
         "fix": "biome check --write ./",
-        "fix:unsafe": "biome check --write --unsafe ./"
+        "fix:unsafe": "biome check --write --unsafe ./",
+        "test:api": "npm test --prefix ./api"
     },
     "devDependencies": {
         "@biomejs/biome": "2.5.15"
