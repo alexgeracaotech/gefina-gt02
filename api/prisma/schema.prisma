@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource database {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  role         String     @default("user")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  customers    Customer[]
+  sessions     Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id
+  userId    Int      @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Customer {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  name      String
+  email     String    @unique
+  imageUrl  String?   @map("image_url")
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  invoices  Invoice[]
+
+  @@map("customers")
+}
+
+model Invoice {
+  id         Int      @id @default(autoincrement())
+  customerId Int      @map("customer_id")
+  amount     Int
+  status     String   @default("pending")
+  issueDate  DateTime @map("issue_date") @database.Date
+  dueDate    DateTime @map("due_date") @database.Date
+  createdAt  DateTime @default(now()) @map("created_at")
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
+
+  @@map("invoices")
+}
