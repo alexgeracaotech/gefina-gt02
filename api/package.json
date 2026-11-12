@@ -4,7 +4,9 @@
     "start": "node ./server.ts",
     "dev": "node --watch --env-file=.env ./server.ts",
     "check": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "postinstall": "prisma generate",
+    "seed": "node --env-file=.env ./prisma/seed.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
