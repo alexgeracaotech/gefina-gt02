@@ -6,7 +6,8 @@
     "check": "tsc --noEmit",
     "test": "vitest run",
     "postinstall": "prisma generate",
-    "seed": "node --env-file=.env ./prisma/seed.ts"
+    "seed": "node --env-file=.env ./prisma/seed.ts",
+    "migrate:deploy": "prisma migrate deploy"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
