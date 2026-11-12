@@ -1,14 +1,11 @@
-import express from 'express';
-import path from 'node:path';
 import fs from 'node:fs';
-
-import dashboard from './dashboard.route.ts';
-import invoices from './invoice.route.ts';
+import path from 'node:path';
+import express from 'express';
 import customers from './customer.route.ts';
-
-import prisma from './prisma.ts';
-
+import dashboard from './dashboard.route.ts';
 import handleError from './error.middleware.ts';
+import invoices from './invoice.route.ts';
+import prisma from './prisma.ts';
 
 const app = express();
 
@@ -24,7 +21,7 @@ app.use((request, _response, next) => {
 app.get('/api/health', async (_request, response) => {
   try {
     await prisma.$queryRaw`SELECT 1;`;
-  
+
     response.status(200).json({
       server: 'Server is running.',
       database: 'Database avaliable.'
@@ -37,7 +34,6 @@ app.get('/api/health', async (_request, response) => {
       database: 'Database unavaliable.'
     });
   }
-
 });
 
 app.use('/api/dashboard', dashboard);
@@ -55,7 +51,7 @@ app.use((request, response, next) => {
     next();
     return;
   }
-  
+
   response.sendFile(path.join(dist, 'index.html'));
 });
 
