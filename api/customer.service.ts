@@ -1,13 +1,20 @@
-import pool from './database.ts';
+import prisma from './prisma.ts';
 
 interface CustomerOption {
-    id: number;
-    name: string;
-    email: string;
+  id: number;
+  name: string;
+  email: string;
 }
 
-export async function findCustomersOptions(): Promise<CustomerOption[]> {
-    const connect = await pool.query<CustomerOption>('SELECT id, name, email FROM customers ORDER BY name;');
-
-    return connect.rows;
+export async function findCustomersOptions(): Promise<
+  CustomerOption[]
+> {
+  return await prisma.customer.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true
+    },
+    orderBy: { name: 'asc' }
+  });
 }

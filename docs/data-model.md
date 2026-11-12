@@ -1,5 +1,7 @@
 # Modelo de dados
 
+A fonte da estrutura do banco é `./api/prisma/schema.prisma`, declarado no repositório e aplicado por migração. Este documento descreve as decisões de modelagem e a razão de cada uma; não é executado e não cria estrutura alguma.
+
 Estrutura das tabelas do Gefina. A fonte das decisões a respeito do produto é a
 especificação; este documento registra como essas decisões se traduzem em tabelas.
 

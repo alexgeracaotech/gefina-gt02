@@ -1,171 +1,136 @@
 import supertest from 'supertest';
-import {
-    describe,
-    it,
-    expect,
-    beforeEach,
-    afterAll
-} from 'vitest';
+import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 
 import app from './app.ts';
 
-import pool from './database.ts';
+import prisma from './prisma.ts';
 
+const user = {
+  id: 0,
+  email: 'usuario@teste.com.br'
+};
 const customer = {
-    id: 0,
-    email: 'teste@gefina.com.br'
-}
-
-const invoice = { id: 0 }
-
-async function clear(): Promise<void> {
-    await pool.query(
-        `
-            DELETE FROM invoices
-            WHERE customer_id IN (
-                SELECT id FROM customers
-                WHERE email = $1
-            );
-        `,
-        [customer.email]
-    );
-
-    await pool.query(
-        `
-            DELETE FROM customers
-            WHERE email = $1;
-        `,
-        [customer.email]
-    );
-}
+  id: 0,
+  email: 'cliente@teste.com.br'
+};
+const invoice = { id: 0 };
 
 async function populate(): Promise<void> {
-    const connectCustomer = await pool.query(
-        `
-            INSERT INTO customers (user_id, name, email)
-            VALUES ((
-                SELECT id FROM users
-                ORDER BY id
-                LIMIT 1
-            ), 'Teste', $1)
-            RETURNING id;
-        `,
-        [customer.email]
-    );
+  await prisma.user
+    .create({
+      data: {
+        name: 'Usuário de Teste',
+        email: user.email,
+        passwordHash: 'placeholder'
+      }
+    })
+    .then((data) => (user.id = data.id));
 
-    customer.id = connectCustomer.rows[0].id;
+  await prisma.customer
+    .create({
+      data: {
+        userId: user.id,
+        name: 'Cliente de Teste',
+        email: customer.email
+      }
+    })
+    .then((data) => (customer.id = data.id));
 
-    const connectInvoice = await pool.query(
-        `
-            INSERT INTO invoices (customer_id, amount, status, issue_date, due_date)
-            VALUES ($1, 125037, 'pending', '2026-10-01', '2026-10-31')
-            RETURNING id;
-        `,
-        [customer.id]
-    );
+  await prisma.invoice
+    .create({
+      data: {
+        customerId: customer.id,
+        amount: 125037,
+        status: 'pending',
+        issueDate: new Date('2026-10-01'),
+        dueDate: new Date('2026-10-31')
+      }
+    })
+    .then((data) => (invoice.id = data.id));
+}
 
-    invoice.id = connectInvoice.rows[0].id;
+async function clear(): Promise<void> {
+  await prisma.invoice.deleteMany({
+    where: { customerId: customer.id }
+  });
+  await prisma.customer.deleteMany({ where: { userId: user.id } });
+  await prisma.user.deleteMany({ where: { id: user.id } });
 }
 
 const request = supertest(app);
 
-describe(
-    'rotas de faturas',
-    () => {
-        beforeEach(async () => {
-            await clear();
-            await populate();
-        });
+describe('rotas de fatura', () => {
+  beforeEach(async () => {
+    await clear();
+    await populate();
+  });
 
-        afterAll(async () => {
-            await clear();
-            await pool.end();
-        });
+  afterAll(async () => {
+    await clear();
+    await prisma.$disconnect();
+  });
 
-        it(
-            'devolve a relação de faturas',
-            async () => {
-                const response = await request.get('/api/invoices');
+  it('devolve a relação de faturas', async () => {
+    const response = await request.get('/api/invoices');
 
-                expect(response.status).toBe(200);
-                expect(Array.isArray(response.body)).toBe(true);
-            }
-        );
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+  });
 
-        it(
-            'cria fatura e devolve o regitro criado',
-            async () => {
-                const response = await request
-                    .post('/api/invoices')
-                    .send({
-                        customerId: customer.id,
-                        amount: 12345,
-                        status: 'pending',
-                        issueDate: '2026-10-01',
-                        dueDate: '2026-10-31'
-                    });
+  it('cria fatura e devolve o registro criado', async () => {
+    const response = await request.post('/api/invoices').send({
+      customerId: customer.id,
+      amount: 55555,
+      status: 'pending',
+      issueDate: '2026-10-01',
+      dueDate: '2026-10-31'
+    });
 
-                expect(response.status).toBe(201);
-                expect(response.body.id).toBeDefined();
-                expect(response.body.customer.id).toBe(customer.id);
-                expect(response.body.situation).toBe('overdue');
-            }
-        );
+    expect(response.status).toBe(201);
+    expect(response.body.situation).toBe('overdue');
+  });
 
-        it(
-            'altera fatura e devolve fatura alterada',
-            async () => {
-                const response = await request
-                    .put(`/api/invoices/${invoice.id}`)
-                    .send({
-                        customerId: customer.id,
-                        amount: 125037,
-                        status: 'paid',
-                        issueDate: '2026-10-01',
-                        dueDate: '2026-10-31'
-                    });
+  it('altera fatura e devolve registro alterado', async () => {
+    const response = await request
+      .put(`/api/invoices/${invoice.id}`)
+      .send({
+        customerId: customer.id,
+        amount: 125037,
+        status: 'paid',
+        issueDate: '2026-10-01',
+        dueDate: '2026-10-31'
+      });
 
-                expect(response.status).toBe(200);
-                expect(response.body.situation).toBe('paid');
-            }
-        );
+    expect(response.status).toBe(200);
+    expect(response.body.situation).toBe('paid');
+  });
 
-        it(
-            'remove fatura',
-            async () => {
-                const removal = await request.delete(`/api/invoices/${invoice.id}`);
-                const search = await request.get(`/api/invoices/${invoice.id}`);
+  it('remove fatura', async () => {
+    const removal = await request.delete(
+      `/api/invoices/${invoice.id}`
+    );
+    const search = await request.get(`/api/invoices/${invoice.id}`);
 
-                expect(removal.status).toBe(204);
-                expect(search.status).toBe(404);
-            }
-        );
+    expect(removal.status).toBe(204);
+    expect(search.status).toBe(404);
+  });
 
-        it(
-            'recusa busca de fatura com identificador inválido',
-            async () => {
-                const response = await request.get('/api/invoices/abc');
+  it('recusa busca de fatura com identificador inválido', async () => {
+    const response = await request.get('/api/invoices/abc');
 
-                expect(response.status).toBe(400);
-            }
-        );
+    expect(response.status).toBe(400);
+  });
 
-        it(
-            'recusa criação de fatura com valor zerado',
-            async () => {
-                const response = await request
-                    .post('/api/invoices')
-                    .send({
-                        customerId: customer.id,
-                        amount: 0,
-                        status: 'pending',
-                        issueDate: '2026-10-01',
-                        dueDate: '2026-10-31'
-                    });
+  it('recusa criar fatura com valor zerado', async () => {
+    const response = await request.post('/api/invoices').send({
+      customerId: customer.id,
+      amount: 0,
+      status: 'pending',
+      issueDate: '2026-10-01',
+      dueDate: '2026-10-31'
+    });
 
-                expect(response.status).toBe(400);
-                expect(response.body.error.fields.amount).toBeDefined();
-            }
-        );
-    }
-);
+    expect(response.status).toBe(400);
+    expect(response.body.error.fields.amount).toBeDefined();
+  });
+});

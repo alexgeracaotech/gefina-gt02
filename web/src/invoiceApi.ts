@@ -1,58 +1,65 @@
-import {
-    Invoice,
-    InvoiceInput,
-    ApiFailure
+import type {
+  ApiFailure,
+  Invoice,
+  InvoiceInput
 } from './invoiceType.ts';
 
 const header = { 'content-type': 'application/json' };
 
 export async function getAllInvoices(): Promise<Invoice[]> {
-    const response = await fetch('/api/invoices');
+  const response = await fetch('/api/invoices');
 
-    if (!response.ok) throw new Error('Falha ao buscar faturas.');
+  if (!response.ok) throw new Error('Falha ao buscar faturas.');
 
-    return response.json();
+  return response.json();
 }
 
 export async function getInvoiceById(id: number): Promise<Invoice> {
-    const response = await fetch(`/api/invoices/${id}`);
+  const response = await fetch(`/api/invoices/${id}`);
 
-    if (!response.ok) throw new Error('Falha ao buscar fatura.');
+  if (!response.ok) throw new Error('Falha ao buscar fatura.');
 
-    return response.json();
+  return response.json();
 }
 
-export async function createInvoice(datas: InvoiceInput): Promise<ApiFailure | void> {
-    const response = await fetch('/api/invoices', {
-        method: 'POST',
-        headers: header,
-        body: JSON.stringify(datas)
-    });
+export async function createInvoice(
+  datas: InvoiceInput
+): Promise<ApiFailure | undefined> {
+  const response = await fetch('/api/invoices', {
+    method: 'POST',
+    headers: header,
+    body: JSON.stringify(datas)
+  });
 
-    if (response.status === 400) {
-        const body = await response.json();
+  if (response.status === 400) {
+    const body = await response.json();
 
-        return {
-            message: body.error.message,
-            fields: body.error.fields
-        };
-    }
+    return {
+      message: body.error.message,
+      fields: body.error.fields
+    };
+  }
 
-    if (!response.ok) throw new Error('Falha ao criar fatura.');
+  if (!response.ok) throw new Error('Falha ao criar fatura.');
 }
 
-export async function updateInvoice(id: number, datas: InvoiceInput): Promise<void> {
-    const response = await fetch(`/api/invoices/${id}`, {
-        method: 'PUT',
-        headers: header,
-        body: JSON.stringify(datas)
-    });
+export async function updateInvoice(
+  id: number,
+  datas: InvoiceInput
+): Promise<void> {
+  const response = await fetch(`/api/invoices/${id}`, {
+    method: 'PUT',
+    headers: header,
+    body: JSON.stringify(datas)
+  });
 
-    if (!response.ok) throw new Error('Falha ao editar fatura.');
+  if (!response.ok) throw new Error('Falha ao editar fatura.');
 }
 
 export async function deleteInvoice(id: number): Promise<void> {
-    const response = await fetch(`/api/invoices/${id}`, { method: 'DELETE' });
+  const response = await fetch(`/api/invoices/${id}`, {
+    method: 'DELETE'
+  });
 
-    if (!response.ok) throw new Error('Falha ao excluir fatura.');
+  if (!response.ok) throw new Error('Falha ao excluir fatura.');
 }

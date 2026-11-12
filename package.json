@@ -1,15 +1,15 @@
 {
-    "name": "gefina",
-    "version": "0.2.0",
-    "description": "Sistema de gestão de contas a receber.",
-    "author": "Alex Bessa",
-    "scripts": {
-        "check": "biome check ./",
-        "fix": "biome check --write ./",
-        "fix:unsafe": "biome check --write --unsafe ./",
-        "test:api": "npm test --prefix ./api"
-    },
-    "devDependencies": {
-        "@biomejs/biome": "2.5.15"
-    }
+  "name": "gefina",
+  "version": "0.2.0",
+  "description": "Sistema de gestão de contas a receber.",
+  "author": "Alex Bessa",
+  "scripts": {
+    "check": "biome check ./",
+    "fix": "biome check --write ./",
+    "fix:unsafe": "biome check --write --unsafe ./",
+    "test:api": "npm test --prefix ./api"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15"
+  }
 }

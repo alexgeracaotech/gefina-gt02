@@ -1,5 +1,5 @@
 import { Router } from 'express';
-
+import { invoiceSchema, toFieldErrors } from './invoice.schema.ts';
 import {
   findAllInvoices,
   findInvoiceById,
@@ -7,8 +7,6 @@ import {
   modifyInvoice,
   removeInvoice
 } from './invoice.service.ts';
-
-import { invoiceSchema, toFieldErrors } from './invoice.schema.ts';
 
 const router = Router();
 
@@ -42,12 +40,13 @@ router.get('/:id', async (request, response) => {
 
   const invoice = await findInvoiceById(id);
 
-  if (!invoice) response.status(404).json({
-    error: {
-      status: 404,
-      message: 'Fatura não encontrada.'
-    }
-  });
+  if (!invoice)
+    response.status(404).json({
+      error: {
+        status: 404,
+        message: 'Fatura não encontrada.'
+      }
+    });
 
   response.status(200).json(invoice);
 });
@@ -84,17 +83,15 @@ router.put('/:id', async (request, response) => {
     return;
   }
 
-  const invoice = await modifyInvoice(
-    id,
-    request.body
-  );
+  const invoice = await modifyInvoice(id, request.body);
 
-  if (!invoice) response.status(404).json({
-    error: {
-      status: 404,
-      message: 'Fatura não encontrada.'
-    }
-  });
+  if (!invoice)
+    response.status(404).json({
+      error: {
+        status: 404,
+        message: 'Fatura não encontrada.'
+      }
+    });
 
   response.status(200).json(invoice);
 });
@@ -115,14 +112,15 @@ router.delete('/:id', async (request, response) => {
 
   const deleted = await removeInvoice(id);
 
-  if (!deleted) response.status(404).json({
-    error: {
-      status: 404,
-      message: 'Fatura não encontrada.'
-    }
-  });
+  if (!deleted)
+    response.status(404).json({
+      error: {
+        status: 404,
+        message: 'Fatura não encontrada.'
+      }
+    });
 
   response.status(204).end();
-})
+});
 
 export default router;
