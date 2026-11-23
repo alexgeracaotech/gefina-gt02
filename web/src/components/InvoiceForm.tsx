@@ -3,13 +3,13 @@ import {
   type SubmitEvent,
   useState
 } from 'react';
-import type { CustomerOption } from './customerType.ts';
+import type { CustomerOption } from '../types/customerType.ts';
 import type {
   Invoice,
   InvoiceFieldErrors,
   InvoiceInput,
   InvoiceStatus
-} from './invoiceType.ts';
+} from '../types/invoiceType.ts';
 
 interface InvoiceFormProps {
   invoice: Invoice | null;

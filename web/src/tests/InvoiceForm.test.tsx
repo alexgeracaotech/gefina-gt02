@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import InvoiceForm from './InvoiceForm.tsx';
+import InvoiceForm from '../components/InvoiceForm.tsx';
 
 describe('InvoiceForm', () => {
   it('apresenta os campos com rótulo associado', () => {

@@ -2,7 +2,7 @@ import type {
   ApiFailure,
   Invoice,
   InvoiceInput
-} from './invoiceType.ts';
+} from '../types/invoiceType.ts';
 
 const header = { 'content-type': 'application/json' };
 
