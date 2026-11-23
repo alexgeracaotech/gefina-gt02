@@ -1,4 +1,4 @@
-import type { InvoiceSituation } from './invoiceType.ts';
+import type { InvoiceSituation } from './types/invoiceType.ts';
 
 export function situationLabel(situation: InvoiceSituation) {
   switch (situation) {
