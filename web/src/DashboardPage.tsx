@@ -36,47 +36,53 @@ export default function DashboardPage() {
     getDashboard();
   }, []);
 
-  if (loading) return <p className='text-sm text-text-muted'>Carregando...</p>;
+  if (loading)
+    return <p className="text-sm text-text-muted">Carregando...</p>;
 
-  if (error !== null || dashboard === null) return <p className='text-overdue'>{error}</p>;
+  if (error !== null || dashboard === null)
+    return <p className="text-overdue">{error}</p>;
 
-  return <>
-    <h1 className='text-xl font-semibold mb-7'>Painel Inicial</h1>
+  return (
+    <>
+      <h1 className="text-xl font-semibold mb-7">Painel Inicial</h1>
 
-    <div className='flex gap-4'>
-      <SummaryCard
-        label="Total recebido: "
-        value={formatCurrency(dashboard.totals.paid)}
-      />
-      <SummaryCard
-        label="Total pendente: "
-        value={formatCurrency(dashboard.totals.pending)}
-      />
-      <SummaryCard
-        label="Faturas: "
-        value={String(dashboard.totals.invoiceCount)}
-      />
-      <SummaryCard
-        label="Clientes: "
-        value={String(dashboard.totals.customerCount)}
-      />
-    </div>
+      <div className="flex gap-4">
+        <SummaryCard
+          label="Total recebido: "
+          value={formatCurrency(dashboard.totals.paid)}
+        />
+        <SummaryCard
+          label="Total pendente: "
+          value={formatCurrency(dashboard.totals.pending)}
+        />
+        <SummaryCard
+          label="Faturas: "
+          value={String(dashboard.totals.invoiceCount)}
+        />
+        <SummaryCard
+          label="Clientes: "
+          value={String(dashboard.totals.customerCount)}
+        />
+      </div>
 
-    <div className='flex gap-6 mt-8'>
-      <InvoiceSummaryTable
-        title="Faturas Recentes"
-        dateLabel="Emissão"
-        invoices={dashboard.recentInvoices}
-        date={(invoice) => invoice.issueDate}
-      />
-      <InvoiceSummaryTable
-        title="Faturas Atrasadas"
-        dateLabel="Vencimento"
-        invoices={dashboard.overdueInvoices}
-        date={(invoice) => invoice.dueDate}
-      />
-    </div>
+      <div className="flex gap-6 mt-8">
+        <InvoiceSummaryTable
+          title="Faturas Recentes"
+          dateLabel="Emissão"
+          invoices={dashboard.recentInvoices}
+          date={(invoice) => invoice.issueDate}
+        />
+        <InvoiceSummaryTable
+          title="Faturas Atrasadas"
+          dateLabel="Vencimento"
+          invoices={dashboard.overdueInvoices}
+          date={(invoice) => invoice.dueDate}
+        />
+      </div>
 
-    <small className='fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2'>&copy; 2026. Gefina - Gestão financeira simples e eficiente.</small>
-  </>;
+      <small className="fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2">
+        &copy; 2026. Gefina - Gestão financeira simples e eficiente.
+      </small>
+    </>
+  );
 }
