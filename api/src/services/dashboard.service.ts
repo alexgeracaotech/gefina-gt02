@@ -1,11 +1,11 @@
-import type { InvoiceStatus } from './invoice.schema.ts';
+import type { InvoiceStatus } from '../schemas/invoice.schema.ts';
 
 import {
   findOverdueInvoices,
   findRecentInvoices,
   type Invoice
 } from './invoice.service.ts';
-import prisma from './prisma.ts';
+import prisma from '../prisma.ts';
 
 interface Dashboard {
   totals: {
