@@ -5,9 +5,9 @@ interface SummaryCardProps {
 
 export default function SummaryCard(props: SummaryCardProps) {
   return (
-    <div className="card">
-      <p className="card-label">{props.label}</p>
-      <p className="numeric card-value">{props.value}</p>
+    <div className="flex-1 p-4 bg-surface border border-border rounded-surface">
+      <p className="text-sm mb-2 text-text-muted">{props.label}</p>
+      <p className="text-xl font-semibold">{props.value}</p>
     </div>
   );
 }
